@@ -43,7 +43,7 @@ dependencies = [
 
 
 [project.scripts]
-run-test-case = "code_tester.cli:run_from_cli"
+testing-code = "code_tester.cli:run_from_cli"
 
 
 [project.optional-dependencies]
