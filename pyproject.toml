@@ -1,0 +1,121 @@
+# ==============================================================================
+#  Build System Configuration (PEP 517/518)
+# ==============================================================================
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+# ==============================================================================
+#  Project Metadata (PEP 621)
+# ==============================================================================
+[project]
+name = "python-code-tester"
+version = "0.1.0"
+description = "A flexible framework for dynamic testing of Python code using declarative JSON scenarios."
+keywords = ["dynamic testing", "testing", "education", "arcade", "flask", "api"]
+authors = [{ name = "Qu1nel", email = "covach.qn@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Education",
+]
+
+dependencies = [
+    "requests",
+    "Pillow",
+    "scikit-image"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Qu1nel/PythonCodeTester"
+"Documentation" = "https://pythoncodetester.readthedocs.io/en/latest/"
+"Bug Tracker" = "https://github.com/Qu1nel/PythonCodeTester/issues"
+
+
+[project.scripts]
+run-test-case = "code_tester.cli:run_from_cli"
+
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.4.0",
+    "build",
+    "twine",
+    "coverage[toml]>=7.5.0",
+]
+docs = [
+    "sphinx>=7.0.0",
+    "furo",
+    "myst-parser",
+    "sphinx-design",
+]
+
+# ==============================================================================
+#  Tool Configuration
+# ==============================================================================
+
+[tool.ruff]
+line-length = 120
+exclude = [
+    ".venv",
+    "build",
+    "dist",
+    "src/python_code_tester.egg-info",
+    "tests/fixtures",
+]
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "I", # isort
+    "B", # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "D", # pydocstyle
+]
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "D100", # Missing docstring in public module
+    "D101", # Missing docstring in public class
+    "D102", # Missing docstring in public method
+    "D103", # Missing docstring in public function
+    "D104", # Missing docstring in public package
+    "D107", # Missing docstring in __init__
+]
+"src/code_tester/components/__init__.py" = ["D104"]
+"src/code_tester/actions_library/__init__.py" = ["D104"]
+"src/code_tester/assertions_library/__init__.py" = ["D104"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+known-first-party = ["code_tester", "tests"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.coverage.run]
+omit = [
+    "src/code_tester/__main__.py",
+    "src/code_tester/cli.py",
+    "tests/*",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
