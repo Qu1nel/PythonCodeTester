@@ -40,7 +40,6 @@ Attributes:
 """
 
 from .config import AppConfig, ExitCode, LogLevel
-
 from .core import DynamicTester
 from .exceptions import TestCaseError, TestCheckError
 

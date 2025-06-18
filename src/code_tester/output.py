@@ -31,10 +31,10 @@ class Console:
         self._stdout = sys.stdout
 
     def print(
-            self,
-            message: str,
-            *,
-            level: LogLevel | Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = LogLevel.INFO,
+        self,
+        message: str,
+        *,
+        level: LogLevel | Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = LogLevel.INFO,
     ) -> None:
         """Prints a message to stdout and logs it simultaneously."""
         level_str = level.value.lower() if isinstance(level, LogLevel) else level.lower()

@@ -3,12 +3,13 @@
 This module provides context managers and utilities to safely import and run
 student code while capturing its I/O streams (stdin, stdout, stderr).
 """
+
 import io
 import sys
 from contextlib import contextmanager
-from types import ModuleType
 from importlib import util as importlib_util
 from pathlib import Path
+from types import ModuleType
 
 from .exceptions import TestCheckError
 

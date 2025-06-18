@@ -7,6 +7,7 @@ clearer, more informative error messages throughout the testing framework.
 
 class CodeTesterError(Exception):
     """Base exception for all custom errors raised by this application."""
+
     pass
 
 
@@ -42,4 +43,5 @@ class TestCheckError(CodeTesterError):
     code that prevents the check from completing, such as a `ModuleNotFoundError`
     when trying to import a function.
     """
+
     pass
