@@ -39,7 +39,6 @@ class PerformConfig:
     target: str | dict[str, Any] | None = None
     params: dict[str, Any] | None = None
     save_as: str | None = None
-    # Новое поле для зависимостей в Arcade
     start_from_object_ref: str | None = None
 
 
