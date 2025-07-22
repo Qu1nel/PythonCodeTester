@@ -1,4 +1,5 @@
-from .config import AppConfig, ExitCode, LogLevel
+from .config import AppConfig, ExitCode
+from .logging import LogLevel
 from .tester import DynamicTester
 
 __all__ = [

@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from src.code_tester.exceptions import (
+from code_tester.exceptions import (
     ActionError,
     SolutionImportError,
     TestCaseParsingError,

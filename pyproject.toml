@@ -126,3 +126,8 @@ omit = [
 [tool.coverage.report]
 fail_under = 85
 show_missing = true
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+]

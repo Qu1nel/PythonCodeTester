@@ -1,13 +1,13 @@
 import unittest
-from dataclasses import dataclass
 
-from src.code_tester.utils import create_dataclass_from_dict
+from pydantic import BaseModel
+
+from code_tester.utils import create_dataclass_from_dict
 
 
 class TestCreateDataclassFromDict(unittest.TestCase):
-    def test_simple_dataclass(self):
-        @dataclass
-        class Simple:
+    def test_simple_pydantic_model(self):
+        class Simple(BaseModel):
             a: int
             b: str
 
@@ -17,13 +17,11 @@ class TestCreateDataclassFromDict(unittest.TestCase):
         self.assertEqual(instance.b, "test")
         self.assertFalse(hasattr(instance, "c"))
 
-    def test_nested_dataclass(self):
-        @dataclass
-        class Inner:
+    def test_nested_pydantic_model(self):
+        class Inner(BaseModel):
             x: int
 
-        @dataclass
-        class Outer:
+        class Outer(BaseModel):
             inner_obj: Inner
             name: str
 
@@ -33,13 +31,11 @@ class TestCreateDataclassFromDict(unittest.TestCase):
         self.assertIsInstance(instance.inner_obj, Inner)
         self.assertEqual(instance.inner_obj.x, 100)
 
-    def test_list_of_dataclasses(self):
-        @dataclass
-        class Item:
+    def test_list_of_pydantic_models(self):
+        class Item(BaseModel):
             id: int
 
-        @dataclass
-        class Container:
+        class Container(BaseModel):
             items: list[Item]
 
         data = {"items": [{"id": 1}, {"id": 2}]}
@@ -48,9 +44,9 @@ class TestCreateDataclassFromDict(unittest.TestCase):
         self.assertIsInstance(instance.items[0], Item)
         self.assertEqual(instance.items[1].id, 2)
 
-    def test_raises_error_for_non_dataclass(self):
-        class NotADataclass:
+    def test_raises_error_for_non_pydantic_model(self):
+        class NotAPydanticModel:
             pass
 
         with self.assertRaises(TypeError):
-            create_dataclass_from_dict(NotADataclass, {})
+            create_dataclass_from_dict(NotAPydanticModel, {})
