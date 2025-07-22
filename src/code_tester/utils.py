@@ -1,16 +1,6 @@
-from typing import Any, Type, TypeVar
+# Legacy import for backward compatibility
+# New code should import from src.code_tester.utils directly
 
-from pydantic import BaseModel
+from .utils import create_dataclass_from_dict, create_pydantic_from_dict
 
-T = TypeVar("T", bound=BaseModel)
-
-
-def create_pydantic_from_dict(cls: Type[T], data: dict[str, Any]) -> T:
-    if not issubclass(cls, BaseModel):
-        raise TypeError(f"Target class {cls.__name__} is not a pydantic BaseModel.")
-    
-    return cls.model_validate(data)
-
-
-def create_dataclass_from_dict(cls: Type[T], data: dict[str, Any]) -> T:
-    return create_pydantic_from_dict(cls, data)
+__all__ = ["create_dataclass_from_dict", "create_pydantic_from_dict"]

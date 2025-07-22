@@ -1,59 +1,30 @@
-from pathlib import Path
+# Legacy import for backward compatibility
+# New code should import from src.code_tester.utils.exceptions directly
 
+from .utils.exceptions import (
+    CodeTesterError,
+    ExecutionError,
+    ConfigError,
+    TestCaseParsingError,
+    SolutionImportError,
+    ActionError,
+    DependencyResolutionError,
+    CircularDependencyError,
+    ValidationError,
+    PluginError,
+    AssertionError,
+)
 
-class CodeTesterError(Exception):
-    pass
-
-
-class ExecutionError(CodeTesterError):
-    pass
-
-
-class ConfigError(CodeTesterError):
-    def __init__(self, message: str, *, path: Path):
-        self.path = path
-        super().__init__(f"{message} (in file: {path})")
-
-
-class TestCaseParsingError(ConfigError):
-    def __init__(self, message: str, *, path: Path = None, check_id: int | None = None):
-        self.check_id = check_id
-        if check_id:
-            message = f"Error in test case file {path}. Error parsing check '{check_id}': {message}"
-        super().__init__(message, path=path)
-
-
-class SolutionImportError(ExecutionError):
-    def __init__(self, message: str, *, path: Path):
-        self.path = path
-        super().__init__(f"Failed to import solution file '{path}': {message}")
-
-
-class ActionError(ExecutionError):
-    def __init__(self, message: str, *, check_id: int, action: str):
-        self.check_id = check_id
-        self.action = action
-        super().__init__(f"Error during execution of action '{action}' in check '{check_id}': {message}")
-
-
-# Исключения для DI контейнера
-class DependencyResolutionError(CodeTesterError):
-    """Ошибка разрешения зависимости в DI контейнере."""
-    pass
-
-
-class CircularDependencyError(DependencyResolutionError):
-    """Ошибка циклической зависимости в DI контейнере."""
-    pass
-
-
-# Исключения для валидации
-class ValidationError(CodeTesterError):
-    """Ошибка валидации конфигурации."""
-    pass
-
-
-# Исключения для плагинов
-class PluginError(CodeTesterError):
-    """Ошибка загрузки или работы плагина."""
-    pass
+__all__ = [
+    "CodeTesterError",
+    "ExecutionError", 
+    "ConfigError",
+    "TestCaseParsingError",
+    "SolutionImportError",
+    "ActionError",
+    "DependencyResolutionError",
+    "CircularDependencyError",
+    "ValidationError",
+    "PluginError",
+    "AssertionError",
+]

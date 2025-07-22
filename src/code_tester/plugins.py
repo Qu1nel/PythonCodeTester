@@ -2,8 +2,7 @@ import importlib
 import pkgutil
 from pathlib import Path
 
-from . import LogLevel
-from .output import Console
+from .logging import LogLevel, Console
 
 
 def initialize_plugins(logger: Console):
