@@ -26,19 +26,22 @@ class ContainsAssertion(Assertion):
     def check(self, actual_value: Any) -> bool:
         expected_value = self.config.value
         
-        if isinstance(actual_value, str):
-            return expected_value in actual_value
-        elif isinstance(actual_value, (list, tuple)):
-            return expected_value in actual_value
-        elif isinstance(actual_value, dict):
-            return expected_value in actual_value
+        try:
+            if isinstance(actual_value, str):
+                return str(expected_value) in actual_value
+            elif isinstance(actual_value, (list, tuple)):
+                return expected_value in actual_value
+            elif isinstance(actual_value, dict):
+                return expected_value in actual_value
+        except (TypeError, ValueError):
+            return False
         
         return False
 
 
 class IsInRangeAssertion(Assertion):
     def check(self, actual_value: Any) -> bool:
-        if not isinstance(actual_value, (int, float)):
+        if isinstance(actual_value, bool) or not isinstance(actual_value, (int, float)):
             return False
         
         range_config = self.config.value

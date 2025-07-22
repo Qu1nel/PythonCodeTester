@@ -1,0 +1,92 @@
+{
+  "test_id": 2,
+  "test_name": "Mathematical Functions Test",
+  "description": "Tests standalone mathematical functions",
+  "test_type": "py_general",
+  "checks": [
+    {
+      "check_id": 1,
+      "name_for_output": "Test Factorial Function",
+      "reason_for_output": "factorial(5) returned {actual}, expected {expected}",
+      "explain_for_error": "factorial function should calculate n! correctly",
+      "spec": {
+        "perform": {
+          "action": "call_function",
+          "target": "factorial",
+          "params": {
+            "args": [5]
+          }
+        },
+        "expect": {
+          "return_value": {
+            "assertion": "equals",
+            "value": 120
+          }
+        }
+      }
+    },
+    {
+      "check_id": 2,
+      "name_for_output": "Test Fibonacci Function",
+      "reason_for_output": "fibonacci(7) returned {actual}, expected {expected}",
+      "explain_for_error": "fibonacci function should calculate Fibonacci numbers correctly",
+      "spec": {
+        "perform": {
+          "action": "call_function",
+          "target": "fibonacci",
+          "params": {
+            "args": [7]
+          }
+        },
+        "expect": {
+          "return_value": {
+            "assertion": "equals",
+            "value": 13
+          }
+        }
+      }
+    },
+    {
+      "check_id": 3,
+      "name_for_output": "Test Prime Check",
+      "reason_for_output": "is_prime(17) returned {actual}, expected {expected}",
+      "explain_for_error": "is_prime function should correctly identify prime numbers",
+      "spec": {
+        "perform": {
+          "action": "call_function",
+          "target": "is_prime",
+          "params": {
+            "args": [17]
+          }
+        },
+        "expect": {
+          "return_value": {
+            "assertion": "equals",
+            "value": true
+          }
+        }
+      }
+    },
+    {
+      "check_id": 4,
+      "name_for_output": "Test Range Check",
+      "reason_for_output": "fibonacci(6) = {actual} is not in expected range",
+      "explain_for_error": "fibonacci(6) should return a value between 5 and 10",
+      "spec": {
+        "perform": {
+          "action": "call_function",
+          "target": "fibonacci",
+          "params": {
+            "args": [6]
+          }
+        },
+        "expect": {
+          "return_value": {
+            "assertion": "is_in_range",
+            "value": {"min": 5, "max": 10}
+          }
+        }
+      }
+    }
+  ]
+}
