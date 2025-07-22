@@ -2,10 +2,10 @@ import unittest
 from pathlib import Path
 from unittest.mock import Mock
 
-from src.code_tester.config import PerformConfig
-from src.code_tester.environment import ExecutionEnvironment
-from src.code_tester.logging import LogConfig, LogLevel, setup_logger, Console
-from src.code_tester.plugins.core_actions import (
+from code_tester.config import PerformConfig
+from code_tester.execution import ExecutionEnvironment
+from code_tester.logging import LogConfig, LogLevel, setup_logger, Console
+from code_tester.plugins.core_actions import (
     CallFunctionAction,
     CallMethodAction,
     CreateObjectAction,

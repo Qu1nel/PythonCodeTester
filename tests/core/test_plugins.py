@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from src.code_tester.core import (
+from code_tester.core import (
     DependencyContainer,
     ComponentMetadata,
     ComponentProvider,
@@ -9,7 +9,7 @@ from src.code_tester.core import (
     PluginRegistry,
     plugin_provider,
 )
-from src.code_tester.exceptions import PluginError
+from code_tester.utils.exceptions import PluginError
 
 
 class TestComponentProvider(ComponentProvider):

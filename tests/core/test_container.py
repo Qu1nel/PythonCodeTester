@@ -12,13 +12,13 @@ Unit тесты для DependencyContainer.
 import unittest
 from unittest.mock import Mock
 
-from src.code_tester.core import (
+from code_tester.core import (
     DependencyContainer,
     ScopedContainer,
     ServiceLifetime,
     IDisposable,
 )
-from src.code_tester.exceptions import (
+from code_tester.utils.exceptions import (
     DependencyResolutionError,
     CircularDependencyError,
 )

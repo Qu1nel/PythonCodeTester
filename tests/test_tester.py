@@ -1,11 +1,10 @@
 import unittest
 from pathlib import Path
 
-from src.code_tester.plugins.core_actions import RunScriptAction
-from src.code_tester.config import AppConfig, PerformConfig
-from src.code_tester.tester import DynamicTester
-from src.code_tester.environment import ExecutionEnvironment
-from src.code_tester.logging import LogConfig, LogLevel, setup_logger, Console
+from code_tester.plugins.core_actions import RunScriptAction
+from code_tester.config import AppConfig, PerformConfig
+from code_tester.execution import DynamicTester, ExecutionEnvironment
+from code_tester.logging import LogConfig, LogLevel, setup_logger, Console
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
 

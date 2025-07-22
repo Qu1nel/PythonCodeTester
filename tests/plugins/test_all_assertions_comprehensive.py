@@ -1,8 +1,8 @@
 import unittest
 from decimal import Decimal
 
-from src.code_tester.config import ExpectConfig
-from src.code_tester.plugins.core_assertions import (
+from code_tester.config import ExpectConfig
+from code_tester.plugins.core_assertions import (
     ContainsAssertion,
     EqualsAssertion,
     IsCloseToAssertion,

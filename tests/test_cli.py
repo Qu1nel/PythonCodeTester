@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import patch
 
-from src.code_tester.cli import setup_arg_parser
-from src.code_tester.config import LogLevel
+from code_tester.cli.main import setup_arg_parser
+from code_tester.config import LogLevel
 
 
 class TestCli(unittest.TestCase):

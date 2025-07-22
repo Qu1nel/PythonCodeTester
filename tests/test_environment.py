@@ -3,9 +3,9 @@ import unittest
 from pathlib import Path
 from types import ModuleType
 
-from src.code_tester.environment import ExecutionEnvironment
-from src.code_tester.exceptions import SolutionImportError
-from src.code_tester.logging import LogConfig, LogLevel, setup_logger, Console
+from code_tester.execution import ExecutionEnvironment
+from code_tester.utils.exceptions import SolutionImportError
+from code_tester.logging import LogConfig, LogLevel, setup_logger, Console
 
 FIXTURES_DIR = Path(__file__).parent / "env_fixtures"
 
