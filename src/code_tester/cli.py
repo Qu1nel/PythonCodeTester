@@ -4,7 +4,7 @@ from pathlib import Path
 
 from . import LogLevel, __version__
 from .config import AppConfig, ExitCode
-from .tester import DynamicTester, initialize_plugins
+from .tester import DynamicTester
 from .exceptions import CodeTesterError
 from .output import Console, log_level_type, setup_logging
 
@@ -48,7 +48,6 @@ def run_from_cli() -> None:
     logger = setup_logging(args.log)
     console = Console(logger, is_quiet=args.quiet, show_verdict=not args.no_verdict)
     console.print(f"Logger configured with level: {args.log}", level=LogLevel.DEBUG)
-    initialize_plugins(console)
 
     config = AppConfig(
         solution_path=args.solution_path,

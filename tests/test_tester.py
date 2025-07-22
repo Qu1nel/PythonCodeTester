@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from src.code_tester.actions_library.io_actions import RunScriptAction
+from src.code_tester.plugins.core_actions import RunScriptAction
 from src.code_tester.config import AppConfig, LogLevel, PerformConfig
 from src.code_tester.tester import DynamicTester
 from src.code_tester.environment import ExecutionEnvironment

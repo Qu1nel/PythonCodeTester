@@ -15,6 +15,13 @@ from .container import (
     ServiceDescriptor,
     IDisposable,
 )
+from .plugins import (
+    ComponentMetadata,
+    ComponentProvider,
+    PluginManager,
+    PluginRegistry,
+    plugin_provider,
+)
 
 __all__ = [
     "DependencyContainer",
@@ -22,4 +29,9 @@ __all__ = [
     "ServiceLifetime",
     "ServiceDescriptor",
     "IDisposable",
+    "ComponentMetadata",
+    "ComponentProvider",
+    "PluginManager",
+    "PluginRegistry",
+    "plugin_provider",
 ]
