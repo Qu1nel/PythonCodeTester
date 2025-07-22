@@ -1,47 +1,36 @@
-"""Defines custom exceptions for the code tester application.
-
-These custom exception classes allow for more specific error handling and provide
-clearer, more informative error messages throughout the testing framework.
-"""
+from pathlib import Path
 
 
 class CodeTesterError(Exception):
-    """Base exception for all custom errors raised by this application."""
-
     pass
 
 
-class TestCaseError(CodeTesterError):
-    """Raised when a test case JSON file is malformed or invalid.
+class ExecutionError(CodeTesterError):
+    pass
 
-    This error indicates a problem with the configuration of a test case or
-    one of its checks, not with the code being tested.
 
-    Attributes:
-        check_id (int | str | None): The ID of the check that caused the error,
-            if available.
-    """
+class ConfigError(CodeTesterError):
+    def __init__(self, message: str, *, path: Path):
+        self.path = path
+        super().__init__(f"{message} (in file: {path})")
 
-    def __init__(self, message: str, check_id: int | str | None = None):
-        """Initializes the TestCaseError.
 
-        Args:
-            message: The specific error message describing the problem.
-            check_id: The ID of the problematic check.
-        """
+class TestCaseParsingError(ConfigError):
+    def __init__(self, message: str, *, path: Path = None, check_id: int | None = None):
         self.check_id = check_id
         if check_id:
-            super().__init__(f"Error in test check '{check_id}': {message}")
-        else:
-            super().__init__(f"Error in test case file: {message}")
+            message = f"Error in test case file {path}. Error parsing check '{check_id}': {message}"
+        super().__init__(message, path=path)
 
 
-class TestCheckError(CodeTesterError):
-    """Raised when an error occurs during the execution of a single check.
+class SolutionImportError(ExecutionError):
+    def __init__(self, message: str, *, path: Path):
+        self.path = path
+        super().__init__(f"Failed to import solution file '{path}': {message}")
 
-    This typically indicates a problem with the test setup or the student's
-    code that prevents the check from completing, such as a `ModuleNotFoundError`
-    when trying to import a function.
-    """
 
-    pass
+class ActionError(ExecutionError):
+    def __init__(self, message: str, *, check_id: int, action: str):
+        self.check_id = check_id
+        self.action = action
+        super().__init__(f"Error during execution of action '{action}' in check '{check_id}': {message}")

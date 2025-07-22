@@ -10,7 +10,7 @@ build-backend = "setuptools.build_meta"
 # ==============================================================================
 [project]
 name = "python-code-tester"
-version = "0.1.0"
+version = "0.0.1"
 description = "A flexible framework for dynamic testing of Python code using declarative JSON scenarios."
 keywords = ["dynamic testing", "testing", "education", "arcade", "flask", "api"]
 authors = [{ name = "Qu1nel", email = "covach.qn@gmail.com" }]
@@ -67,11 +67,13 @@ docs = [
 [tool.ruff]
 line-length = 120
 exclude = [
+    "venv",
     ".venv",
     "build",
     "dist",
     "src/python_code_tester.egg-info",
     "tests/fixtures",
+    "tests/env_fixtures",
 ]
 
 [tool.ruff.lint]

@@ -1,78 +1,98 @@
-"""Defines the command-line interface for the code tester.
-
-This module is responsible for parsing command-line arguments, setting up the
-application configuration, and orchestrating the main dynamic testing workflow.
-It acts as the primary entry point for user interaction.
-"""
-
 import argparse
 import sys
 from pathlib import Path
 
-from . import __version__
-from .config import AppConfig, ExitCode, LogLevel
+from . import LogLevel, __version__
+from .config import AppConfig, ExitCode
 from .core import DynamicTester
 from .exceptions import CodeTesterError
-from .output import Console, setup_logging
+from .output import Console, log_level_type, setup_logging
 
 
 def setup_arg_parser() -> argparse.ArgumentParser:
-    """Creates and configures the argument parser for the CLI."""
     parser = argparse.ArgumentParser(
-        prog="testing-cod",
+        prog="run-test-case",
         description="Executes a Python solution against a dynamic test case.",
     )
     parser.add_argument("solution_path", type=Path, help="Path to the Python solution file to test.")
     parser.add_argument("test_case_path", type=Path, help="Path to the JSON file with the test case.")
+
     parser.add_argument(
-        "-l",
-        "--log-level",
-        type=LogLevel,
-        choices=list(LogLevel),
-        default=LogLevel.WARNING,
-        help="Set the logging level (default: WARNING).",
+        "--log",
+        type=log_level_type,
+        default=LogLevel.ERROR,
+        help="Set the logging level for stderr (TRACE, DEBUG, INFO, WARNING, ERROR, CRITICAL). Default: ERROR.",
     )
-    parser.add_argument("--silent", action="store_true", help="Suppress stdout output, show only logs.")
-    parser.add_argument("--stop-on-first-fail", action="store_true", help="Stop after the first failed check.")
-    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
+    parser.add_argument(
+        "--quiet", action="store_true", help="Suppress all stdout output (test results and final verdict)."
+    )
+    parser.add_argument("--no-verdict", action="store_true", help="Suppress final verdict, show only failed checks.")
+    parser.add_argument(
+        "--max-messages",
+        type=int,
+        default=0,
+        metavar="N",
+        help="Maximum number of failed check messages to display (0 for no limit).",
+    )
+    parser.add_argument(
+        "-x", "--exit-on-first-error", action="store_true", help="Exit instantly on the first failed check."
+    )
+    parser.add_argument("--version", "-v", action="version", version=f"%(prog)s {__version__}")
     return parser
 
 
 def run_from_cli() -> None:
-    """Runs the full application lifecycle from the command line."""
     parser = setup_arg_parser()
     args = parser.parse_args()
 
-    logger = setup_logging(args.log_level)
-    console = Console(logger, is_silent=args.silent)
+    logger = setup_logging(args.log)
+    console = Console(logger, is_quiet=args.quiet, show_verdict=not args.no_verdict)
+    console.print(f"Logger configured with level: {args.log}", level=LogLevel.DEBUG)
+    initialize_plugins(console)
+
     config = AppConfig(
         solution_path=args.solution_path,
         test_case_path=args.test_case_path,
-        log_level=args.log_level,
-        is_silent=args.silent,
-        stop_on_first_fail=args.stop_on_first_fail,
+        log_level=args.log,
+        is_quiet=args.quiet,
+        exit_on_first_error=args.exit_on_first_error,
+        max_messages=args.max_messages,
     )
+    console.print(f"Tester config: {config}", level=LogLevel.TRACE)
 
     try:
-        console.print(f"Starting test run for: {config.solution_path}", level=LogLevel.INFO)
+        console.print(f"Starting test run for: {config.solution_path}", level=LogLevel.INFO, show_user=True)
 
         tester = DynamicTester(config, console)
+
+        console.print("Running test case...", level=LogLevel.TRACE)
         all_passed = tester.run()
+        console.print(f"Test case finished. Overall result: {all_passed}", level=LogLevel.TRACE)
 
         if all_passed:
-            console.print("All tests passed.", level=LogLevel.INFO)
+            console.print("✅ All tests passed.", level=LogLevel.INFO, is_verdict=True)
             sys.exit(ExitCode.SUCCESS)
         else:
-            console.print("Some tests failed.", level=LogLevel.ERROR)
+            console.print(
+                f"❌ Some tests failed. ({len(tester.failed_checks_ids)} of {len(tester.test_case_config.checks)})",
+                level=LogLevel.WARNING,
+                is_verdict=True,
+            )
             sys.exit(ExitCode.TESTS_FAILED)
 
     except CodeTesterError as e:
-        console.print(str(e), level=LogLevel.CRITICAL)
+        console.print(
+            f"Error: A tester framework error occurred: {e}", level=LogLevel.CRITICAL, show_user=True, exc_info=True
+        )
         sys.exit(ExitCode.TESTS_FAILED)
     except FileNotFoundError as e:
-        console.print(f"Error: File not found - {e.strerror}: {e.filename}", level=LogLevel.CRITICAL)
+        console.print(f"Error: Input file not found: {e.filename}", level=LogLevel.CRITICAL, show_user=True)
         sys.exit(ExitCode.FILE_NOT_FOUND)
     except Exception as e:
-        console.print(f"An unexpected error occurred: {e}", level=LogLevel.CRITICAL)
-        logger.exception("Traceback for unexpected error:")
+        console.print(
+            f"Error: An unexpected error occurred: {e.__class__.__name__}. See logs for detailed traceback.",
+            level=LogLevel.CRITICAL,
+            show_user=True,
+            exc_info=True,
+        )
         sys.exit(ExitCode.UNEXPECTED_ERROR)

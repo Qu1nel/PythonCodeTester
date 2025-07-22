@@ -1,45 +1,45 @@
-"""Contains factories for creating Action and Assertion objects.
+import logging
+from typing import Any
 
-This module implements the Factory Method design pattern to decouple the core
-tester engine from the concrete implementations of its components.
-"""
-
-from ..config import ExpectConfig, PerformConfig
-# from ..exceptions import TestCaseError
-from .definitions import Action, Assertion
+from ..config import CheckConfig, ExpectConfig, PerformConfig
+from ..exceptions import TestCaseParsingError
+from ..output import Console
+from ..utils import create_dataclass_from_dict
+from .definitions import Action, Assertion, CheckHandler, action_registry, assertion_registry
+from .handlers import DefaultCheckHandler, ExpectationHandler
 
 
 class ActionFactory:
-    """Creates Action objects from a 'perform' configuration block."""
-
-    def __init__(self, config: PerformConfig):
-        """Initializes the factory with the action's configuration."""
-        self._config = config
-
-    def create(self) -> Action:
-        """Creates a specific Action instance based on its type."""
-        # TODO: Реализовать match-case для 'run_script', 'call_function', etc.
-        # from ..actions_library.io_actions import RunScriptAction
-        # match self._config.action:
-        #     case "run_script":
-        #         return RunScriptAction(self._config)
-        #     ...
-        raise NotImplementedError(f"Action '{self._config.action}' not implemented.")
+    @staticmethod
+    def create(config: PerformConfig) -> Action:
+        handler_class = action_registry.get(config.action)
+        if handler_class:
+            return handler_class(config)
+        raise TestCaseParsingError(f"Action type '{config.action}' not implemented.")
 
 
 class AssertionFactory:
-    """Creates a specific Assertion object for a single expectation."""
+    @staticmethod
+    def create(config: ExpectConfig) -> Assertion:
+        logging.getLogger().error(f"{config = }, {type(config) = }")
+        logging.getLogger().error(f"{action_registry.get_all_registry = }, {assertion_registry.get_all_registry = }")
+        handler_class = assertion_registry.get(config.assertion)
+        logging.getLogger().error(f"{handler_class = }, {type(handler_class) = }")
+        if handler_class:
+            return handler_class(config)
+        raise TestCaseParsingError(f"Assertion type '{config.assertion}' not implemented.")
 
-    def __init__(self, config: ExpectConfig):
-        """Initializes the factory with the assertion's configuration."""
-        self._config = config
 
-    def create(self) -> Assertion:
-        """Creates a specific Assertion instance based on its type."""
-        # TODO: Реализовать match-case для 'equals', 'contains', 'is_close_to', etc.
-        # from ..assertions_library.common import EqualsAssertion
-        # match self._config.assertion:
-        #     case "equals":
-        #         return EqualsAssertion(self._config)
-        #     ...
-        raise NotImplementedError(f"Assertion '{self._config.assertion}' not implemented.")
+class CheckHandlerFactory:
+    def __init__(self, console: Console):
+        self.console = console
+        self.action_factory = ActionFactory()
+        self.assertion_factory = AssertionFactory()
+
+    def create(self, check_config_dict: dict[str, Any]) -> CheckHandler:
+        config = create_dataclass_from_dict(CheckConfig, check_config_dict)
+        action = self.action_factory.create(config.spec.perform)
+
+        expectation_handler = ExpectationHandler(config.spec.expect, self.console, self.assertion_factory)
+
+        return DefaultCheckHandler(config, action, expectation_handler, self.console)
