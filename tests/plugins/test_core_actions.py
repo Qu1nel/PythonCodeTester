@@ -4,7 +4,7 @@ from unittest.mock import Mock
 
 from src.code_tester.config import PerformConfig
 from src.code_tester.environment import ExecutionEnvironment
-from src.code_tester.output import Console, setup_logging
+from src.code_tester.logging import LogConfig, LogLevel, setup_logger, Console
 from src.code_tester.plugins.core_actions import (
     CallFunctionAction,
     CallMethodAction,
@@ -19,7 +19,8 @@ FIXTURES_DIR = Path(__file__).parent.parent / "fixtures"
 
 class TestRunScriptAction(unittest.TestCase):
     def setUp(self):
-        logger = setup_logging("CRITICAL")
+        log_config = LogConfig(level=LogLevel.CRITICAL, console_enabled=False)
+        logger = setup_logger(log_config)
         self.console = Console(logger, is_quiet=True)
 
     def test_run_script_with_stdin(self):
@@ -47,7 +48,8 @@ class TestRunScriptAction(unittest.TestCase):
 
 class TestCallFunctionAction(unittest.TestCase):
     def setUp(self):
-        logger = setup_logging("CRITICAL")
+        log_config = LogConfig(level=LogLevel.CRITICAL, console_enabled=False)
+        logger = setup_logger(log_config)
         self.console = Console(logger, is_quiet=True)
         
         test_function_file = FIXTURES_DIR / "test_functions.py"
@@ -140,7 +142,8 @@ def divide(a, b):
 
 class TestCreateObjectAction(unittest.TestCase):
     def setUp(self):
-        logger = setup_logging("CRITICAL")
+        log_config = LogConfig(level=LogLevel.CRITICAL, console_enabled=False)
+        logger = setup_logger(log_config)
         self.console = Console(logger, is_quiet=True)
         
         test_class_file = FIXTURES_DIR / "test_classes.py"
@@ -241,7 +244,8 @@ class ErrorClass:
 
 class TestCallMethodAction(unittest.TestCase):
     def setUp(self):
-        logger = setup_logging("CRITICAL")
+        log_config = LogConfig(level=LogLevel.CRITICAL, console_enabled=False)
+        logger = setup_logger(log_config)
         self.console = Console(logger, is_quiet=True)
 
     def test_call_method(self):
@@ -293,7 +297,8 @@ class TestCallMethodAction(unittest.TestCase):
 
 class TestGetAttributeAction(unittest.TestCase):
     def setUp(self):
-        logger = setup_logging("CRITICAL")
+        log_config = LogConfig(level=LogLevel.CRITICAL, console_enabled=False)
+        logger = setup_logger(log_config)
         self.console = Console(logger, is_quiet=True)
 
     def test_get_attribute(self):
@@ -335,7 +340,8 @@ class TestGetAttributeAction(unittest.TestCase):
 
 class TestReadFileContentAction(unittest.TestCase):
     def setUp(self):
-        logger = setup_logging("CRITICAL")
+        log_config = LogConfig(level=LogLevel.CRITICAL, console_enabled=False)
+        logger = setup_logger(log_config)
         self.console = Console(logger, is_quiet=True)
 
     def test_read_file_content(self):

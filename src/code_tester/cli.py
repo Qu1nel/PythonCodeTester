@@ -2,11 +2,18 @@ import argparse
 import sys
 from pathlib import Path
 
-from . import LogLevel, __version__
+from . import __version__
 from .config import AppConfig, ExitCode
 from .tester import DynamicTester
 from .exceptions import CodeTesterError
-from .output import Console, log_level_type, setup_logging
+from .logging import LogConfig, LogLevel, setup_logger, Console, generate_trace_id, set_trace_id
+
+
+def log_level_type(value: str) -> LogLevel:
+    try:
+        return LogLevel(value.upper())
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"'{value}' is not a valid log level. Choose from: {', '.join(LogLevel)}")
 
 
 def setup_arg_parser() -> argparse.ArgumentParser:
@@ -45,8 +52,19 @@ def run_from_cli() -> None:
     parser = setup_arg_parser()
     args = parser.parse_args()
 
-    logger = setup_logging(args.log)
+    # Setup new logging system
+    log_config = LogConfig(
+        level=args.log,
+        console_enabled=True,
+        colorize=not args.quiet
+    )
+    logger = setup_logger(log_config)
     console = Console(logger, is_quiet=args.quiet, show_verdict=not args.no_verdict)
+    
+    # Generate trace ID for this test run
+    trace_id = generate_trace_id()
+    set_trace_id(trace_id)
+    
     console.print(f"Logger configured with level: {args.log}", level=LogLevel.DEBUG)
 
     config = AppConfig(

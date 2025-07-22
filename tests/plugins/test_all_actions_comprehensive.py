@@ -4,7 +4,7 @@ from unittest.mock import Mock
 
 from src.code_tester.config import PerformConfig
 from src.code_tester.environment import ExecutionEnvironment
-from src.code_tester.output import Console, setup_logging
+from src.code_tester.logging import LogConfig, LogLevel, setup_logger, Console
 from src.code_tester.plugins.core_actions import (
     CallFunctionAction,
     CallMethodAction,
@@ -19,7 +19,8 @@ FIXTURES_DIR = Path(__file__).parent.parent / "fixtures"
 
 class TestAllActionsComprehensive(unittest.TestCase):
     def setUp(self):
-        logger = setup_logging("CRITICAL")
+        log_config = LogConfig(level=LogLevel.CRITICAL, console_enabled=False)
+        logger = setup_logger(log_config)
         self.console = Console(logger, is_quiet=True)
 
     def test_run_script_comprehensive(self):

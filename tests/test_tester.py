@@ -2,17 +2,18 @@ import unittest
 from pathlib import Path
 
 from src.code_tester.plugins.core_actions import RunScriptAction
-from src.code_tester.config import AppConfig, LogLevel, PerformConfig
+from src.code_tester.config import AppConfig, PerformConfig
 from src.code_tester.tester import DynamicTester
 from src.code_tester.environment import ExecutionEnvironment
-from src.code_tester.output import Console, setup_logging
+from src.code_tester.logging import LogConfig, LogLevel, setup_logger, Console
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
 
 
 class TestDynamicTesterIntegration(unittest.TestCase):
     def setUp(self):
-        logger = setup_logging(LogLevel.CRITICAL)
+        log_config = LogConfig(level=LogLevel.CRITICAL, console_enabled=False)
+        logger = setup_logger(log_config)
         self.console = Console(logger, is_quiet=True)
 
     def run_tester(self, solution_file: Path, test_case_file: Path) -> bool:

@@ -1,12 +1,11 @@
 import json
 from pathlib import Path
 
-from . import LogLevel
 from .config import AppConfig, TestCaseConfig
 from .core import DependencyContainer, PluginManager, PluginRegistry
 from .environment import ExecutionEnvironment
 from .exceptions import CodeTesterError, TestCaseParsingError
-from .output import Console, log_initialization
+from .logging import LogLevel, Console, set_test_case, set_check_id, log_initialization
 from .utils import create_dataclass_from_dict
 
 
