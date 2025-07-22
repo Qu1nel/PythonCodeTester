@@ -33,7 +33,8 @@ classifiers = [
 dependencies = [
     "requests",
     "Pillow",
-    "scikit-image"
+    "scikit-image",
+    "arcade"
 ]
 
 [project.urls]

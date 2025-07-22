@@ -34,3 +34,26 @@ class ActionError(ExecutionError):
         self.check_id = check_id
         self.action = action
         super().__init__(f"Error during execution of action '{action}' in check '{check_id}': {message}")
+
+
+# Исключения для DI контейнера
+class DependencyResolutionError(CodeTesterError):
+    """Ошибка разрешения зависимости в DI контейнере."""
+    pass
+
+
+class CircularDependencyError(DependencyResolutionError):
+    """Ошибка циклической зависимости в DI контейнере."""
+    pass
+
+
+# Исключения для валидации
+class ValidationError(CodeTesterError):
+    """Ошибка валидации конфигурации."""
+    pass
+
+
+# Исключения для плагинов
+class PluginError(CodeTesterError):
+    """Ошибка загрузки или работы плагина."""
+    pass

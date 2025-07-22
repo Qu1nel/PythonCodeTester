@@ -4,7 +4,7 @@ from pathlib import Path
 
 from . import LogLevel, __version__
 from .config import AppConfig, ExitCode
-from .core import DynamicTester
+from .tester import DynamicTester, initialize_plugins
 from .exceptions import CodeTesterError
 from .output import Console, log_level_type, setup_logging
 
