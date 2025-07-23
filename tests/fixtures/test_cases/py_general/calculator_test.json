@@ -1,0 +1,71 @@
+{
+    "test_id": 1,
+    "test_name": "Calculator Class Test",
+    "description": "Test Calculator class methods and functionality",
+    "test_type": "py_general",
+    "checks": [
+        {
+            "check_id": 1,
+            "name_for_output": "Test Calculator creation",
+            "reason_for_output": "Calculator should be created successfully",
+            "explain_for_error": "Make sure Calculator class is defined correctly",
+            "spec": {
+                "perform": {
+                    "action": "create_object",
+                    "target": "Calculator",
+                    "save_as": "calc"
+                },
+                "expect": {
+                    "return_value": {
+                        "assertion": "is_instance_of",
+                        "value": "Calculator"
+                    }
+                }
+            }
+        },
+        {
+            "check_id": 2,
+            "name_for_output": "Test addition method",
+            "reason_for_output": "Addition should return {expected}, got {actual}",
+            "explain_for_error": "Check your add method implementation",
+            "spec": {
+                "perform": {
+                    "action": "call_method",
+                    "target": "add",
+                    "params": {
+                        "object_ref": "calc",
+                        "args": [5, 3]
+                    }
+                },
+                "expect": {
+                    "return_value": {
+                        "assertion": "equals",
+                        "value": 8
+                    }
+                }
+            }
+        },
+        {
+            "check_id": 3,
+            "name_for_output": "Test division by zero",
+            "reason_for_output": "Division by zero should raise ValueError",
+            "explain_for_error": "Your divide method should raise ValueError when dividing by zero",
+            "spec": {
+                "perform": {
+                    "action": "call_method",
+                    "target": "divide",
+                    "params": {
+                        "object_ref": "calc",
+                        "args": [10, 0]
+                    }
+                },
+                "expect": {
+                    "return_value": {
+                        "assertion": "raises_exception",
+                        "value": "ValueError"
+                    }
+                }
+            }
+        }
+    ]
+}

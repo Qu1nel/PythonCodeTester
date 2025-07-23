@@ -1,0 +1,53 @@
+{
+    "test_id": 2,
+    "test_name": "Weather Client API Test",
+    "description": "Test weather client with mocked HTTP requests",
+    "test_type": "api",
+    "checks": [
+        {
+            "check_id": 1,
+            "name_for_output": "Test weather client creation",
+            "reason_for_output": "WeatherClient should be created with API key",
+            "explain_for_error": "Check your WeatherClient constructor",
+            "spec": {
+                "mocks": [
+                    {
+                        "target_path": "requests.get",
+                        "save_as": "requests_mock",
+                        "behavior": {
+                            "return_object": {
+                                "methods": {
+                                    "json": {
+                                        "return_value": {
+                                            "temperature": 22,
+                                            "description": "Sunny"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "perform": {
+                    "action": "call_function",
+                    "target": "get_weather_summary",
+                    "params": {
+                        "args": ["London"]
+                    }
+                },
+                "expect": {
+                    "return_value": {
+                        "assertion": "contains",
+                        "value": "Weather in London: 22°C, Sunny"
+                    },
+                    "mock_calls": [
+                        {
+                            "assertion": "mock_was_called",
+                            "target_mock": "requests_mock"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
