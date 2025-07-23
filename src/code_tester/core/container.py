@@ -13,7 +13,7 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Any, Callable, Dict, Generic, Optional, Type, TypeVar, get_type_hints
 
-from ..exceptions import DependencyResolutionError, CircularDependencyError
+from ..utils.exceptions import DependencyResolutionError, CircularDependencyError
 
 T = TypeVar("T")
 

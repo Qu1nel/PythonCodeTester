@@ -2,7 +2,7 @@ from typing import Any, Dict
 
 from ..core import ComponentMetadata, ComponentProvider, DependencyContainer, plugin_provider
 from ..config import PerformConfig
-from ..environment import ExecutionEnvironment
+from ..execution import ExecutionEnvironment
 
 
 class Action:
