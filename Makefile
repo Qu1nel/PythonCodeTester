@@ -17,7 +17,7 @@ CYAN    = \033[36m
 # Use uv to run commands inside the virtual environment
 PYTHON_RUNNER   := uv run python
 RUFF_RUNNER     := $(PYTHON_RUNNER) -m ruff
-TEST_RUNNER     := $(PYTHON_RUNNER) -m unittest
+PYTEST_RUNNER   := uv run pytest
 COVERAGE_RUNNER := $(PYTHON_RUNNER) -m coverage
 BUILD_RUNNER    := $(PYTHON_RUNNER) -m build
 TWINE_RUNNER    := $(PYTHON_RUNNER) -m twine
@@ -62,21 +62,31 @@ check: ## Check for linting errors with ruff. Ex: make check
 # ==============================================================================
 
 .PHONY: test
-test: ## Run all unit tests. Ex: make test
+test: ## Run all tests with pytest. Ex: make test
+	@echo "$(CYAN)› Running tests with pytest...$(RESET)"
+	@$(PYTEST_RUNNER) tests/ -v
+
+.PHONY: test-unit
+test-unit: ## Run only unit tests. Ex: make test-unit
 	@echo "$(CYAN)› Running unit tests...$(RESET)"
-	@$(TEST_RUNNER) discover tests
+	@$(PYTEST_RUNNER) tests/unit/ -v
+
+.PHONY: test-integration
+test-integration: ## Run only integration tests. Ex: make test-integration
+	@echo "$(CYAN)› Running integration tests...$(RESET)"
+	@$(PYTEST_RUNNER) tests/integration/ -v
 
 .PHONY: coverage
 coverage: ## Run tests and show coverage report in the console. Ex: make coverage
 	@echo "$(CYAN)› Running tests with coverage...$(RESET)"
-	@$(COVERAGE_RUNNER) run -m unittest discover tests
+	@$(COVERAGE_RUNNER) run -m pytest tests/
 	@echo "$(CYAN)› Coverage report:$(RESET)"
 	@$(COVERAGE_RUNNER) report -m
 
 .PHONY: coverage-html
 coverage-html: ## Run tests and generate an HTML coverage report. Ex: make coverage-html
 	@echo "$(CYAN)› Running tests with coverage...$(RESET)"
-	@$(COVERAGE_RUNNER) run -m unittest discover tests
+	@$(COVERAGE_RUNNER) run -m pytest tests/
 	@echo "$(CYAN)› Generating HTML report...$(RESET)"
 	@$(COVERAGE_RUNNER) html
 	@echo "$(GREEN)✅ HTML report generated in 'htmlcov/'. Open 'htmlcov/index.html' in your browser.$(RESET)"
