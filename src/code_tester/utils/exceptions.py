@@ -75,3 +75,9 @@ class PluginError(CodeTesterError):
 class AssertionError(ExecutionError):
     """Exception raised when assertion fails."""
     pass
+
+
+# Исключения для системы моков
+class MockError(ExecutionError):
+    """Exception raised when mock setup or execution fails."""
+    pass
