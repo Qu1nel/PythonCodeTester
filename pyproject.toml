@@ -137,7 +137,7 @@ addopts = [
     "--tb=short",
     "--strict-markers",
     "--disable-warnings",
-    "--basetemp=temp_pytest",
+    "--basetemp=tests/temp",
 ]
 markers = [
     "unit: Unit tests",

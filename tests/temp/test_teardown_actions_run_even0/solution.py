@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 # Use the test's temporary directory
-TEST_DIR = Path(r"C:\Users\Mi\Kiro\PythonCodeTester\temp_pytest\test_teardown_actions_success0")
+TEST_DIR = Path(r"C:\Users\Mi\Kiro\PythonCodeTester\tests\temp\test_teardown_actions_run_even0")
 
 def create_file(filename, content):
     file_path = TEST_DIR / filename
