@@ -1,0 +1,32 @@
+{
+  "test_id": 1,
+  "test_name": "No Setup/Teardown Test",
+  "description": "Test without setup or teardown actions",
+  "test_type": "py_general",
+  "checks": [
+    {
+      "check_id": 1,
+      "name_for_output": "Simple test",
+      "reason_for_output": "Should pass",
+      "explain_for_error": "Simple test",
+      "spec": {
+        "perform": {
+          "action": "call_function",
+          "target": "create_file",
+          "params": {
+            "args": [
+              "simple.txt",
+              "simple content"
+            ]
+          }
+        },
+        "expect": {
+          "return_value": {
+            "assertion": "equals",
+            "value": "Created simple.txt"
+          }
+        }
+      }
+    }
+  ]
+}

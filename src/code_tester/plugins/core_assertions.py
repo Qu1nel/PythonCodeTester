@@ -88,6 +88,19 @@ class RaisesExceptionAssertion(Assertion):
         return isinstance(actual_value, expected_exception_name)
 
 
+class HasLengthAssertion(Assertion):
+    def check(self, actual_value: Any) -> bool:
+        expected_length = self.config.value
+        
+        if not isinstance(expected_length, int):
+            return False
+        
+        try:
+            return len(actual_value) == expected_length
+        except TypeError:
+            return False
+
+
 @plugin_provider(ComponentMetadata(
     name="core_assertions",
     version="1.0.0",
@@ -102,6 +115,7 @@ class CoreAssertionsProvider(ComponentProvider):
             "is_close_to": IsCloseToAssertion,
             "is_instance_of": IsInstanceOfAssertion,
             "raises_exception": RaisesExceptionAssertion,
+            "has_length": HasLengthAssertion,
         }
         
         for assertion_name, assertion_class in assertion_factories.items():

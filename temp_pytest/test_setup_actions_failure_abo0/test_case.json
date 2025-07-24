@@ -1,0 +1,40 @@
+{
+  "test_id": 1,
+  "test_name": "Setup Failure Test",
+  "description": "Test with failing setup actions",
+  "test_type": "py_general",
+  "setup_actions": [
+    {
+      "action": "call_function",
+      "target": "nonexistent_function",
+      "params": {
+        "args": []
+      }
+    }
+  ],
+  "checks": [
+    {
+      "check_id": 1,
+      "name_for_output": "This should not run",
+      "reason_for_output": "Should not reach here",
+      "explain_for_error": "Should not reach here",
+      "spec": {
+        "perform": {
+          "action": "call_function",
+          "target": "read_file",
+          "params": {
+            "args": [
+              "test_file.txt"
+            ]
+          }
+        },
+        "expect": {
+          "return_value": {
+            "assertion": "equals",
+            "value": "Hello World"
+          }
+        }
+      }
+    }
+  ]
+}

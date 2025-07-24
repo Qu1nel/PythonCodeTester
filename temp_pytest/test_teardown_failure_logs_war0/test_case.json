@@ -1,0 +1,41 @@
+{
+  "test_id": 1,
+  "test_name": "Teardown Failure Test",
+  "description": "Test that teardown failures are logged as warnings",
+  "test_type": "py_general",
+  "checks": [
+    {
+      "check_id": 1,
+      "name_for_output": "Simple test",
+      "reason_for_output": "Should pass",
+      "explain_for_error": "Simple test",
+      "spec": {
+        "perform": {
+          "action": "call_function",
+          "target": "create_file",
+          "params": {
+            "args": [
+              "test.txt",
+              "content"
+            ]
+          }
+        },
+        "expect": {
+          "return_value": {
+            "assertion": "equals",
+            "value": "Created test.txt"
+          }
+        }
+      }
+    }
+  ],
+  "teardown_actions": [
+    {
+      "action": "call_function",
+      "target": "nonexistent_teardown_function",
+      "params": {
+        "args": []
+      }
+    }
+  ]
+}

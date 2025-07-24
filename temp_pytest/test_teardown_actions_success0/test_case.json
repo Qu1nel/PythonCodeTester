@@ -1,0 +1,54 @@
+{
+  "test_id": 1,
+  "test_name": "Teardown Test",
+  "description": "Test with teardown actions",
+  "test_type": "py_general",
+  "setup_actions": [
+    {
+      "action": "call_function",
+      "target": "create_file",
+      "params": {
+        "args": [
+          "temp_file.txt",
+          "Temporary content"
+        ]
+      }
+    }
+  ],
+  "checks": [
+    {
+      "check_id": 1,
+      "name_for_output": "Test file exists",
+      "reason_for_output": "File should exist",
+      "explain_for_error": "File should be created by setup",
+      "spec": {
+        "perform": {
+          "action": "call_function",
+          "target": "read_file",
+          "params": {
+            "args": [
+              "temp_file.txt"
+            ]
+          }
+        },
+        "expect": {
+          "return_value": {
+            "assertion": "equals",
+            "value": "Temporary content"
+          }
+        }
+      }
+    }
+  ],
+  "teardown_actions": [
+    {
+      "action": "call_function",
+      "target": "delete_file",
+      "params": {
+        "args": [
+          "temp_file.txt"
+        ]
+      }
+    }
+  ]
+}

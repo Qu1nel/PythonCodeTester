@@ -1,0 +1,26 @@
+{
+    "test_id": 1,
+    "test_name": "Sample Test",
+    "description": "A simple test to verify hello_world function",
+    "test_type": "py_general",
+    "checks": [
+        {
+            "check_id": 1,
+            "name_for_output": "Test hello_world function",
+            "reason_for_output": "Function should return 'Hello, World!'",
+            "explain_for_error": "Make sure your hello_world function returns the exact string 'Hello, World!'",
+            "spec": {
+                "perform": {
+                    "action": "call_function",
+                    "target": "hello_world"
+                },
+                "expect": {
+                    "return_value": {
+                        "assertion": "equals",
+                        "value": "Hello, World!"
+                    }
+                }
+            }
+        }
+    ]
+}

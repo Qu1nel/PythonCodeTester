@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel, Field, field_validator, ConfigDict
 
@@ -66,6 +66,7 @@ class CheckConfig(BaseModel):
 
 class SetupActionConfig(BaseModel):
     action: str = Field(..., description="Action to perform during setup")
+    target: Optional[Union[str, Dict[str, Any]]] = Field(None, description="Target for the action")
     params: Optional[Dict[str, Any]] = Field(None, description="Parameters for the setup action")
     
     @field_validator('action')
