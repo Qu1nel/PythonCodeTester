@@ -129,7 +129,7 @@ def run(
         if all_passed:
             if not quiet:
                 rich_console.print(Panel(
-                    "[bold green]✅ All tests passed![/bold green]",
+                    "[bold green]All tests passed![/bold green]",
                     border_style="green"
                 ))
             sys.exit(ExitCode.SUCCESS)
@@ -139,7 +139,7 @@ def run(
             
             if not quiet:
                 rich_console.print(Panel(
-                    f"[bold red]❌ Some tests failed[/bold red]\n"
+                    f"[bold red]Some tests failed[/bold red]\n"
                     f"Failed: {failed_count} of {total_count}",
                     border_style="red"
                 ))
